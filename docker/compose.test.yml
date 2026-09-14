@@ -1,0 +1,22 @@
+services:
+  postgres-test:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test-isolated-only
+      POSTGRES_DB: businessos_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d businessos_test"]
+      interval: 2s
+      retries: 20
+  backend-test:
+    build:
+      context: ../backend
+      target: test
+    environment:
+      DATABASE_URL: postgresql+psycopg://test:test-isolated-only@postgres-test:5432/businessos_test
+      TEST_DATABASE_URL: postgresql+psycopg://test:test-isolated-only@postgres-test:5432/businessos_test
+      JWT_SECRET_KEY: isolated-test-key-with-at-least-thirty-two-characters
+    depends_on:
+      postgres-test:
+        condition: service_healthy
