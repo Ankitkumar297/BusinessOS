@@ -19,6 +19,15 @@ class RefreshRequest(BaseModel):
     refresh_token: str = Field(min_length=40, max_length=512)
 
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(min_length=40, max_length=512)
+    password: str = Field(min_length=12, max_length=128)
+
+
 class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: UUID
@@ -42,3 +51,4 @@ class AuthResponse(BaseModel):
     token_type: str = "bearer"
     user: UserResponse
     business: BusinessResponse
+
