@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = Field(default=15, ge=1, le=60)
     refresh_token_expire_days: int = Field(default=30, ge=1, le=90)
     backend_cors_origins: str = "http://localhost:5173"
+    smtp_username: str = ""
+    smtp_app_password: str = ""
+    public_app_url: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=False, extra="ignore")
 
@@ -35,3 +38,4 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
