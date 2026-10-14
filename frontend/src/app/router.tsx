@@ -2,7 +2,7 @@ import { Navigate, Outlet, RouterProvider, createBrowserRouter } from "react-rou
 import { AppLayout } from "../layouts/app-layout";
 import { useAuth } from "../features/auth/use-auth";
 import { DashboardPage } from "../pages/dashboard-page";
-import { LoginPage, RegisterPage } from "../pages/auth-pages";
+import { ForgotPasswordPage, LoginPage, RegisterPage, ResetPasswordPage } from "../pages/auth-pages";
 import { UsersPage } from "../features/team/users-page";
 import { RolesPage } from "../features/team/roles-page";
 import { PermissionRoute } from "../features/team/permissions";
@@ -22,6 +22,8 @@ function ProtectedRoute(): JSX.Element { const { session, isLoading } = useAuth(
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
+  { path: "/forgot-password", element: <ForgotPasswordPage /> },
+  { path: "/reset-password", element: <ResetPasswordPage /> },
   { element: <ProtectedRoute />, children: [
     { element: <AppLayout />, children: [
       { index: true, element: <DashboardPage /> },
@@ -53,3 +55,4 @@ const router = createBrowserRouter([
 ]);
 
 export function AppRouter(): JSX.Element { return <RouterProvider router={router} />; }
+
