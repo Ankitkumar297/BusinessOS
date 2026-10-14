@@ -4,7 +4,7 @@ import type { AuthSession } from "../types/auth";
 const storageKey = "businessos.session";
 export const getSession = (): AuthSession | null => { const raw = localStorage.getItem(storageKey); return raw ? JSON.parse(raw) as AuthSession : null; };
 export const setSession = (session: AuthSession | null): void => { if (session) localStorage.setItem(storageKey, JSON.stringify(session)); else localStorage.removeItem(storageKey); };
-export const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1", headers: { "Content-Type": "application/json" } });
+export const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.PROD ? "/api/v1" : "http://localhost:8000/api/v1"), headers: { "Content-Type": "application/json" } });
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => { const token = getSession()?.access_token; if (token) config.headers.Authorization = `Bearer ${token}`; return config; });
 let refreshPromise: Promise<AuthSession> | null = null;
 api.interceptors.response.use((response) => response, async (error: AxiosError) => {
